@@ -7,7 +7,8 @@ import lombok.Data;
 @Builder
 public class ReservationRequest {
     private String eventId;
-    private String venueId;
-    private String areaId;
+    private int numberOfTickets;
     private String userId;
+    private String areaId;
+    private String venueId;
 }
