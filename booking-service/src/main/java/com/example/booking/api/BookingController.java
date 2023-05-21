@@ -1,9 +1,6 @@
 package com.example.booking.api;
 
-import com.example.booking.core.BookTicketsRequest;
-import com.example.booking.core.BookingFailedException;
-import com.example.booking.core.BookingService;
-import com.example.booking.core.TicketsBooking;
+import com.example.booking.core.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,8 +20,13 @@ public class BookingController implements BookingApi {
         return ResponseEntity.created(bookingLocation(booking)).build();
     }
 
+    @Override
+    public ResponseEntity<TicketsBooking> get(String bookingId) throws BookingNotFoundException {
+        return null;
+    }
+
     private static URI bookingLocation(TicketsBooking booking) {
-        return URI.create("/" + booking.getBookingId());
+        return URI.create("/" + booking.getId());
     }
 
     @ExceptionHandler(value = BookingFailedException.class)

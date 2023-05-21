@@ -2,22 +2,32 @@ package com.example.booking.core;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
+@Service
 @AllArgsConstructor
 @Slf4j
 public class TicketsBookingService implements BookingService {
 
-    private TemporaryReservationService reservationService;
+    private BookingsStorage bookingsStorage;
+    private EventsService eventsService;
 
     @Override
     public TicketsBooking book(BookTicketsRequest request) throws BookingFailedException {
-        Reservation reservation = reserve(request);
-        return TicketsBooking.builder().bookingId(reservation.getId()).ticketsIds(reservation.getTickets()).build();
+        if (!eventsService.eventIsRegistered(request.getEventId())) {
+            eventsService.register(request.getEventId());
+        }
+        return reserve(request);
     }
 
-    private Reservation reserve(BookTicketsRequest request) throws BookingFailedException {
+    @Override
+    public TicketsBooking get(String bookingId) throws BookingNotFoundException {
+        return bookingsStorage.fetch(bookingId);
+    }
+
+    private TicketsBooking reserve(BookTicketsRequest request) throws BookingFailedException {
         try {
-            return reservationService.reserve(map(request));
+            return bookingsStorage.registerBooking(map(request));
         } catch (FailedToReserveException e) {
             log.error("An error occurred while booking tickets for request={}", request, e);
             throw new BookingFailedException(e);

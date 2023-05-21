@@ -1,19 +1,19 @@
-package com.example.booking.core;
+package com.example.booking.core.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.redis.core.RedisHash;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@RedisHash("Booking")
-public class TicketsBooking {
+public class Event implements Serializable {
     private String id;
-    private List<String> ticketsIds;
+    private int capacity;
+    private List<String> bookedTickets;
 }
