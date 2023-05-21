@@ -8,11 +8,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.text.ParseException;
+
 @RequestMapping("events/")
 public interface EventsApi {
 
+    String DATE_PATTERN = "yyyy-MM-dd";
+
     @PostMapping("")
-    ResponseEntity<String> createEvent(CreateNewEventRequest event);
+    ResponseEntity<String> createEvent(CreateNewEventApiRequest event) throws ParseException;
 
     @GetMapping("/{id}")
     ResponseEntity<Event> getEvent(@PathVariable("id") String eventId) throws EventNotFoundException;
