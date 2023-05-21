@@ -19,15 +19,14 @@ repositories {
 }
 
 extra["springCloudVersion"] = "2022.0.2"
-extra["swaggerVersion"] = "3.0.0"
+extra["springDocVersion"] = "2.1.0"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.cloud:spring-cloud-starter-consul-discovery")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
-    implementation("io.springfox:springfox-boot-starter:${property("swaggerVersion")}")
-    implementation("io.springfox:springfox-swagger-ui:${property("swaggerVersion")}")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${property("springDocVersion")}")
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
