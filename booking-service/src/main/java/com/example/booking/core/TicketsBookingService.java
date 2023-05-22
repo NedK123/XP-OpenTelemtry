@@ -1,5 +1,6 @@
 package com.example.booking.core;
 
+import com.example.booking.core.events.IEventsService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class TicketsBookingService implements BookingService {
 
     private BookingsStorage bookingsStorage;
-    private EventsService eventsService;
+    private IEventsService eventsService;
 
     @Override
     public TicketsBooking book(BookTicketsRequest request) throws BookingFailedException {

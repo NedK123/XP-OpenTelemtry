@@ -1,7 +1,8 @@
 package com.example.booking.persistence;
 
-import com.example.booking.core.EventsStorage;
 import com.example.booking.core.events.CreateEventRequest;
+import com.example.booking.core.events.EventNotFoundException;
+import com.example.booking.core.events.EventsStorage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,16 @@ public class RedisEventsStorage implements EventsStorage {
     @Override
     public void updateAvailability(List<String> bookedTickets) {
 
+    }
+
+    @Override
+    public EventAvailability get(String eventId) throws EventNotFoundException {
+        return repo.findById(eventId).orElseThrow(EventNotFoundException::new);
+    }
+
+    @Override
+    public boolean exists(String eventId) {
+        return repo.existsById(eventId);
     }
 
 }
