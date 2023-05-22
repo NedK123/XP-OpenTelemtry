@@ -10,5 +10,4 @@ public class ReservationRequest {
     private int numberOfTickets;
     private String userId;
     private String areaId;
-    private String venueId;
 }

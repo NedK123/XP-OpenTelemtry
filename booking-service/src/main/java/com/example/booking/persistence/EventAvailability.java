@@ -20,4 +20,10 @@ public class EventAvailability implements Serializable {
     private int capacity;
     @Builder.Default
     private Set<String> bookedTickets = new HashSet<>();
+
+    public void book(Set<String> bookedTickets) {
+        this.capacity -= bookedTickets.size();
+        this.bookedTickets.addAll(bookedTickets);
+    }
+
 }

@@ -4,9 +4,10 @@ import com.example.booking.core.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
@@ -20,7 +21,8 @@ public class RedisBookingsStorage implements BookingsStorage {
         // randomly saves some requests and reject other to simulate real life scenarios
         if (new Random().nextBoolean()) {
             TicketsBooking booking = TicketsBooking.builder().id(UUID.randomUUID().toString())
-                    .ticketsIds(generateTickets(request.getNumberOfTickets())).build();
+                    .ticketsIds(generateTickets(request.getNumberOfTickets())).eventId(request.getEventId())
+                    .areaId(request.getAreaId()).build();
             return bookingsRepo.save(booking);
         }
         throw new FailedToReserveException("oh no! something went wrong while doing a reservation");
@@ -31,8 +33,8 @@ public class RedisBookingsStorage implements BookingsStorage {
         return bookingsRepo.findById(bookingId).orElseThrow(() -> new BookingNotFoundException(bookingId));
     }
 
-    private static List<String> generateTickets(int numberOfTickets) {
-        return IntStream.of(numberOfTickets).mapToObj(i -> UUID.randomUUID().toString()).toList();
+    private static Set<String> generateTickets(int numberOfTickets) {
+        return IntStream.range(0, numberOfTickets).mapToObj(i -> UUID.randomUUID().toString()).collect(Collectors.toSet());
     }
 
 }

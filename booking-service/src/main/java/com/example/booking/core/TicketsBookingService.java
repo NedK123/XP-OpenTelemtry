@@ -1,5 +1,6 @@
 package com.example.booking.core;
 
+import com.example.booking.core.events.EventNotFoundException;
 import com.example.booking.core.events.IEventsService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +29,10 @@ public class TicketsBookingService implements BookingService {
 
     private TicketsBooking reserve(BookTicketsRequest request) throws BookingFailedException {
         try {
-            return bookingsStorage.registerBooking(map(request));
-        } catch (FailedToReserveException e) {
+            TicketsBooking ticketsBooking = bookingsStorage.registerBooking(map(request));
+            eventsService.updateAvailability(ticketsBooking.getEventId(), ticketsBooking.getTicketsIds());
+            return ticketsBooking;
+        } catch (FailedToReserveException | EventNotFoundException e) {
             log.error("An error occurred while booking tickets for request={}", request, e);
             throw new BookingFailedException(e);
         }
@@ -37,7 +40,7 @@ public class TicketsBookingService implements BookingService {
 
     private static ReservationRequest map(BookTicketsRequest request) {
         return ReservationRequest.builder().eventId(request.getEventId())
-                .venueId(request.getVenueId()).areaId(request.getAreaId()).userId(request.getUserId())
+                .areaId(request.getAreaId()).userId(request.getUserId())
                 .numberOfTickets(request.getNumberOfTickets()).build();
     }
 

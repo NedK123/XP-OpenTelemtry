@@ -8,7 +8,6 @@ import lombok.Data;
 public class BookTicketsRequest {
     private String userId;
     private String eventId;
-    private String venueId;
     private String areaId;
     private int numberOfTickets;
 }

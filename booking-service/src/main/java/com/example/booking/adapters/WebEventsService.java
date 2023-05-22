@@ -23,7 +23,7 @@ public class WebEventsService implements EventsDetailsService {
     }
 
     private static URI getEventApiPath(String eventId) {
-        return UriComponentsBuilder.fromUriString("http://localhost:8080/events/{id}").buildAndExpand(eventId).toUri();
+        return UriComponentsBuilder.fromUriString("http://localhost:8081/events/{id}").buildAndExpand(eventId).toUri();
     }
 
 }

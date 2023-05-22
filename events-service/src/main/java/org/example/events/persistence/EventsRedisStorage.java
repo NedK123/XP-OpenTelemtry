@@ -27,7 +27,8 @@ public class EventsRedisStorage implements EventsStorage {
     @Override
     public String save(CreateNewEventRequest request) {
         simulateLatency();
-        Event event = Event.builder().id(UUID.randomUUID().toString()).totalNumOfTickets(request.getTotalNumOfTickets()).date(request.getDate()).build();
+        Event event = Event.builder().id(UUID.randomUUID().toString()).totalNumOfTickets(request.getTotalNumOfTickets()).date(request.getDate())
+                .venueId(request.getVenueId()).build();
         return repo.save(event).getId();
     }
 

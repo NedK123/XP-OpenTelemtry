@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -15,5 +15,7 @@ import java.util.List;
 @RedisHash("Booking")
 public class TicketsBooking {
     private String id;
-    private List<String> ticketsIds;
+    private String eventId;
+    private String areaId;
+    private Set<String> ticketsIds;
 }

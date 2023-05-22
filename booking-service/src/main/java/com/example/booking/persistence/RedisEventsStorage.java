@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -22,8 +22,12 @@ public class RedisEventsStorage implements EventsStorage {
     }
 
     @Override
-    public void updateAvailability(List<String> bookedTickets) {
-
+    public void updateAvailability(String eventId, Set<String> bookedTickets) throws EventNotFoundException {
+        EventAvailability eventAvailability = repo.findById(eventId).map(event -> {
+            event.book(bookedTickets);
+            return event;
+        }).orElseThrow(EventNotFoundException::new);
+        repo.save(eventAvailability);
     }
 
     @Override

@@ -16,4 +16,5 @@ public class EventDetails implements Serializable {
     private String id;
     private int totalNumOfTickets;
     private Date date;
+    private String venueId;
 }

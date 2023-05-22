@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -34,6 +36,11 @@ public class EventsService implements IEventsService {
         CreateEventRequest request = CreateEventRequest.builder().eventId(eventId)
                 .capacity(eventDetails.getTotalNumOfTickets()).build();
         storage.createIfNotFound(request);
+    }
+
+    @Override
+    public void updateAvailability(String eventId, Set<String> ticketsIds) throws EventNotFoundException {
+        storage.updateAvailability(eventId, ticketsIds);
     }
 
 }
