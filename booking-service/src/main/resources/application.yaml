@@ -1,3 +1,10 @@
+#######################################################################
+############################## Telemetry ##############################
+#######################################################################
+monitoring.endpoint.url: "http://localhost:14250/enpoint/v1/trace"
+
+
+
 server:
   port: 8080
 spring:
@@ -7,3 +14,28 @@ spring:
     consul:
       host: localhost
       port: 8500
+  sleuth:
+    otel:
+      config:
+        trace-id-ratio-based: 1.0
+      exporter:
+        otlp:
+          endpoint: http://collector:4317
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+
+logging:
+  pattern:
+    level: ${spring.application.name:},%X{traceId:-},%X{spanId:-}
