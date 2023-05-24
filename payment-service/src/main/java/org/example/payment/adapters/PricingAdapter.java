@@ -15,7 +15,7 @@ public class PricingAdapter implements PricingService {
 
     @Override
     public BookingPrice calculate(String bookingId) {
-        return null;
+        return client.generatePrice(GeneratePricingRequest.builder().bookingId(bookingId).build()).getBody();
     }
 
 }

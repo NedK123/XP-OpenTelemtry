@@ -1,0 +1,38 @@
+package org.example.pricing.core;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.example.pricing.core.booking.Booking;
+import org.example.pricing.core.booking.BookingNotFoundException;
+import org.example.pricing.core.booking.BookingService;
+import org.springframework.stereotype.Service;
+
+@Service
+@AllArgsConstructor
+@Slf4j
+public class LocalPricingService implements PricingService {
+
+    private BookingService bookingService;
+    private EventTicketsPriceStorage storage;
+
+    @Override
+    public BookingPrice calculatePrice(String bookingId) throws FailedToPriceBookingException {
+        Booking booking = fetchBooking(bookingId);
+        return generatePrice(booking);
+    }
+
+    private BookingPrice generatePrice(Booking booking) throws FailedToPriceBookingException {
+        TicketPrice ticketPrice = storage.fetch(booking.getEventId(), booking.getAreaId());
+        double finalPrice = booking.getTicketsIds().stream().mapToDouble(s -> ticketPrice.getAmount()).reduce((left, right) -> left + right).orElseThrow(FailedToPriceBookingException::new);
+        return BookingPrice.builder().amount(finalPrice).currency(ticketPrice.getCurrency()).build();
+    }
+
+    private Booking fetchBooking(String bookingId) throws FailedToPriceBookingException {
+        try {
+            return bookingService.fetch(bookingId);
+        } catch (BookingNotFoundException e) {
+            throw new FailedToPriceBookingException();
+        }
+    }
+
+}
