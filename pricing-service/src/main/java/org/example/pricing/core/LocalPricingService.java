@@ -18,6 +18,7 @@ public class LocalPricingService implements PricingService {
     @Override
     public BookingPrice calculatePrice(String bookingId) throws FailedToPriceBookingException {
         Booking booking = fetchBooking(bookingId);
+        log.info("Fetched booking({}) info for price quotation. {}", booking.getId(), booking);
         return generatePrice(booking);
     }
 
@@ -29,7 +30,9 @@ public class LocalPricingService implements PricingService {
 
     private BookingPrice generatePrice(Booking booking) throws FailedToPriceBookingException {
         TicketPrice ticketPrice = fetchTicketPrice(booking);
+        log.info("Fetched ticket price {} for booking={}", ticketPrice, booking.getId());
         double finalPrice = booking.getTicketsIds().stream().mapToDouble(s -> ticketPrice.getAmount()).reduce((left, right) -> left + right).orElseThrow(FailedToPriceBookingException::new);
+        log.info("Quoted a total booking price of {} for booking {}", finalPrice, booking.getId());
         return BookingPrice.builder().amount(finalPrice).currency(ticketPrice.getCurrency()).build();
     }
 

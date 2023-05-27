@@ -19,7 +19,8 @@ public class PaymentController implements PaymentApi {
 
     @Override
     public ResponseEntity<Payment> pay(PayApiRequest request) throws PaymentFailedException {
-        Payment payment = paymentService.pay(PayRequest.builder().build());
+        log.info("Received a payment request={}", request);
+        Payment payment = paymentService.pay(PayRequest.builder().bookingId(request.getBookingId()).build());
         return ResponseEntity.ok(payment);
     }
 

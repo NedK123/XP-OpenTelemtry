@@ -19,8 +19,11 @@ public class LocalPaymentService implements PaymentService {
 
     @Override
     public Payment pay(PayRequest request) throws PaymentFailedException {
+        log.info("Starting payment process for request={}", request);
         BookingPrice price = calculatePrice(request);
+        log.info("Calculated price={} for booking={} ", price, request.getBookingId());
         simulate(request.getBookingId(), price);
+        log.info("Payment for booking={} is done", request.getBookingId());
         return Payment.builder().id(UUID.randomUUID().toString()).amount(price.getAmount()).currency(price.getCurrency()).bookingId(request.getBookingId()).build();
     }
 

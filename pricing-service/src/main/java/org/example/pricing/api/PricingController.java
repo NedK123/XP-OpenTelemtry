@@ -19,6 +19,7 @@ public class PricingController implements PricingApi {
 
     @Override
     public ResponseEntity<BookingPrice> generatePrice(GeneratePricingRequest request) throws FailedToPriceBookingException {
+        log.info("Received price quote request={}", request);
         BookingPrice price = pricingService.calculatePrice(request.getBookingId());
         return ResponseEntity.ok(price);
     }
