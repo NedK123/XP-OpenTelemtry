@@ -35,7 +35,7 @@ services:
       context: ./payment-service
       dockerfile: Dockerfile
     ports:
-      - "8282:8282"
+      - "8082:8082"
     depends_on:
       - consul
       - redis
@@ -45,7 +45,7 @@ services:
       context: ./pricing-service
       dockerfile: Dockerfile
     ports:
-      - "8283:8283"
+      - "8083:8083"
     depends_on:
       - consul
       - redis

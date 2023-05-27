@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.pricing.core.BookingPrice;
 import org.example.pricing.core.FailedToPriceBookingException;
 import org.example.pricing.core.PricingService;
+import org.example.pricing.core.RegisterTicketsPricesRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,15 @@ public class PricingController implements PricingApi {
     public ResponseEntity<BookingPrice> generatePrice(GeneratePricingRequest request) throws FailedToPriceBookingException {
         BookingPrice price = pricingService.calculatePrice(request.getBookingId());
         return ResponseEntity.ok(price);
+    }
+
+    @Override
+    public ResponseEntity<Void> registerTicketsPrice(RegisterTicketsPriceApiRequest request) {
+        log.info("Received a tickets prices registration request={}", request);
+        pricingService.registerTicketsPrice(RegisterTicketsPricesRequest.builder()
+                .eventId(request.getEventId()).currency(request.getCurrency())
+                .areaPrices(request.getAreaPrices()).build());
+        return ResponseEntity.ok().build();
     }
 
     @ExceptionHandler(value = FailedToPriceBookingException.class)

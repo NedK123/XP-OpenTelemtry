@@ -13,4 +13,7 @@ public interface PricingApi {
     @PostMapping("")
     ResponseEntity<BookingPrice> generatePrice(@RequestBody GeneratePricingRequest request) throws FailedToPriceBookingException;
 
+    @PostMapping("tickets/")
+    ResponseEntity<Void> registerTicketsPrice(@RequestBody RegisterTicketsPriceApiRequest request) throws FailedToPriceBookingException;
+
 }

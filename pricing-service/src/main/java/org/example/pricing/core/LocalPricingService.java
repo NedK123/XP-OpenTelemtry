@@ -21,6 +21,12 @@ public class LocalPricingService implements PricingService {
         return generatePrice(booking);
     }
 
+    @Override
+    public void registerTicketsPrice(RegisterTicketsPricesRequest request) {
+        log.info("registering tickets prices {}", request);
+        storage.save(request);
+    }
+
     private BookingPrice generatePrice(Booking booking) throws FailedToPriceBookingException {
         TicketPrice ticketPrice = fetchTicketPrice(booking);
         double finalPrice = booking.getTicketsIds().stream().mapToDouble(s -> ticketPrice.getAmount()).reduce((left, right) -> left + right).orElseThrow(FailedToPriceBookingException::new);

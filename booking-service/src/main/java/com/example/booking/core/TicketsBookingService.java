@@ -17,7 +17,9 @@ public class TicketsBookingService implements BookingService {
 
     @Override
     public TicketsBooking book(BookTicketsRequest request) throws BookingFailedException {
+        log.info("Processing booking request={}", request);
         if (!eventsService.eventIsRegistered(request.getEventId())) {
+            log.info("registering event for the first time in the booking records");
             eventsService.register(request.getEventId());
         }
         return reserve(request);
@@ -31,8 +33,11 @@ public class TicketsBookingService implements BookingService {
     private TicketsBooking reserve(BookTicketsRequest request) throws BookingFailedException {
         try {
             TicketsBooking ticketsBooking = bookingsStorage.registerBooking(map(request));
+            log.info("Booking {} was registered", request);
             eventsService.updateAvailability(ticketsBooking.getEventId(), ticketsBooking.getTicketsIds());
+            log.info("Event {} availability updated after booking {}", request.getEventId(), ticketsBooking);
             paymentService.processPayment(ticketsBooking);
+            log.info("Payment for booking {} was successful", ticketsBooking.getId());
             return ticketsBooking;
         } catch (Exception e) {
             log.error("An error occurred while booking tickets for request={}", request, e);
