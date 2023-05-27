@@ -2,52 +2,70 @@ version: "3"
 services:
   consul:
     image: consul:latest
-    networks:
-      - backend
     ports:
       - "8500:8500"
 
   redis:
     image: redis:latest
-    networks:
-      - backend
     ports:
       - "6379:6379"
 
-  #  events-service:
-  #    networks:
-  #      - backend
-  #    build:
-  #      context: ./events-service
-  #      dockerfile: Dockerfile
-  #    ports:
-  #      - "8080:8080"
-  #    depends_on:
-  #      - consul
-  #      - redis
+  events-service:
+    build:
+      context: ./events-service
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - consul
+      - redis
+
+  booking-service:
+    build:
+      context: ./booking-service
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - consul
+      - redis
+
+  payment-service:
+    build:
+      context: ./payment-service
+      dockerfile: Dockerfile
+    ports:
+      - "8282:8282"
+    depends_on:
+      - consul
+      - redis
+
+  pricing-service:
+    build:
+      context: ./pricing-service
+      dockerfile: Dockerfile
+    ports:
+      - "8283:8283"
+    depends_on:
+      - consul
+      - redis
 
   jaeger:
     image: jaegertracing/all-in-one:latest
-    networks:
-      - otelcol
     ports:
       - "16686:16686"
       - "14250"
 
   zipkin:
     image: openzipkin/zipkin-slim:latest
-    networks:
-      - otelcol
     ports:
       - "9412:9411"
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:0.74.0
-    networks:
-      - otelcol
     command: [ "--config=/etc/otel-collector-config.yaml" ]
     volumes:
-      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+      - ./otel/otel-collector-config.yaml:/etc/otel-collector-config.yaml
     ports:
       - "4317:4317"
       - "55680:55680"
@@ -69,8 +87,6 @@ services:
       - --web.enable-lifecycle
       - --web.route-prefix=/
       - --enable-feature=exemplar-storage
-    networks:
-      - otelcol
     volumes:
       - ./otel/prometheus/prometheus-config.yaml:/etc/prometheus/prometheus-config.yaml
     ports:
@@ -78,16 +94,8 @@ services:
 
   grafana:
     image: grafana/grafana:9.2.15
-    networks:
-      - otelcol
     volumes:
       - ./otel/grafana/grafana.ini:/etc/grafana/grafana.ini
       - ./otel/grafana/provisioning/:/etc/grafana/provisioning/
     ports:
       - "3000:3000"
-
-networks:
-  otelcol:
-    driver: bridge
-  backend:
-    driver: bridge

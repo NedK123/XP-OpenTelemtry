@@ -10,20 +10,10 @@ import org.springframework.http.server.observation.ServerRequestObservationConte
 @Configuration
 public class TracingConfig {
 
-//    public ObservationPredicate observationPredicate() {
-//        var noopPathSet = Set.of("/actuator");
-//
-//        return (s, context) -> {
-//            return noopPathSet.stream().anyMatch(a -> context.);
-//        };
-//    }
-
     @Bean
     ObservationPredicate ignoreActuator() {
         return (s, context) -> ignoreActuatorRecursive(context);
     }
-
-    ;
 
     public boolean ignoreActuatorRecursive(Observation.ContextView context) {
         if (context instanceof ServerRequestObservationContext serverRequestObservationContext) {
@@ -37,4 +27,5 @@ public class TracingConfig {
 
         return true;
     }
+
 }

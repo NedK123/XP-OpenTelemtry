@@ -6,10 +6,10 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@FeignClient(name = "payment", url = "http://localhost:8082/payment/", configuration = FeignTracingConfiguration.class)
+@FeignClient(name = "payment-service", configuration = FeignTracingConfiguration.class)
 public interface PaymentServiceFeignClient {
 
-    @PostMapping("")
+    @PostMapping("payment/")
     ResponseEntity<PaymentApiModel> pay(PayApiRequest request) throws PaymentFailedException;
 
 }

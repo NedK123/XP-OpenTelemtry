@@ -5,8 +5,15 @@ spring:
     name: events-service
   cloud:
     consul:
-      host: consul
+      host: localhost
       port: 8500
+  redis:
+    host: localhost
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
 management:
   tracing:
     sampling:

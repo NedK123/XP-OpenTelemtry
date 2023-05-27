@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "Booking", url = "http://localhost:8081/booking/", configuration = FeignTracingConfiguration.class)
+@FeignClient(name = "booking-service", configuration = FeignTracingConfiguration.class)
 public interface BookingServiceFeignClient {
 
     @GetMapping("{id}")

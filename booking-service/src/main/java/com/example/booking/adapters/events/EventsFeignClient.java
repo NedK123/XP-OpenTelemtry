@@ -7,10 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "Events", url = "http://localhost:8081/events/", configuration = FeignTracingConfiguration.class)
+@FeignClient(name = "events-service", configuration = FeignTracingConfiguration.class)
 public interface EventsFeignClient {
 
-    @GetMapping("/{id}")
+    @GetMapping("events/{id}")
     ResponseEntity<EventDetails> getEvent(@PathVariable("id") String eventId);
 
 }

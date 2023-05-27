@@ -7,10 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "Pricing", url = "http://localhost:8083/pricing/", configuration = FeignTracingConfiguration.class)
+@FeignClient(name = "pricing-service", configuration = FeignTracingConfiguration.class)
 public interface PricingServiceFeignClient {
 
-    @PostMapping("")
+    @PostMapping("pricing/")
     ResponseEntity<BookingPrice> generatePrice(@RequestBody GeneratePricingRequest request);
 
 }
