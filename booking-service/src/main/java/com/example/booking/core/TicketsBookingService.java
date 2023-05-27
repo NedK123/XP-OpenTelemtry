@@ -1,7 +1,7 @@
 package com.example.booking.core;
 
-import com.example.booking.core.events.EventNotFoundException;
 import com.example.booking.core.events.IEventsService;
+import com.example.booking.core.payment.PaymentService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,6 +13,7 @@ public class TicketsBookingService implements BookingService {
 
     private BookingsStorage bookingsStorage;
     private IEventsService eventsService;
+    private PaymentService paymentService;
 
     @Override
     public TicketsBooking book(BookTicketsRequest request) throws BookingFailedException {
@@ -31,8 +32,9 @@ public class TicketsBookingService implements BookingService {
         try {
             TicketsBooking ticketsBooking = bookingsStorage.registerBooking(map(request));
             eventsService.updateAvailability(ticketsBooking.getEventId(), ticketsBooking.getTicketsIds());
+            paymentService.processPayment(ticketsBooking);
             return ticketsBooking;
-        } catch (FailedToReserveException | EventNotFoundException e) {
+        } catch (Exception e) {
             log.error("An error occurred while booking tickets for request={}", request, e);
             throw new BookingFailedException(e);
         }

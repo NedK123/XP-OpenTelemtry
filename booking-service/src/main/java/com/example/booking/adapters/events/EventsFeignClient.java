@@ -1,4 +1,4 @@
-package com.example.booking.adapters;
+package com.example.booking.adapters.events;
 
 import com.example.booking.config.FeignTracingConfiguration;
 import com.example.booking.core.events.details.EventDetails;

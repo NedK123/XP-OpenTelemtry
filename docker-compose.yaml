@@ -1,5 +1,31 @@
 version: "3"
 services:
+  consul:
+    image: consul:latest
+    networks:
+      - backend
+    ports:
+      - "8500:8500"
+
+  redis:
+    image: redis:latest
+    networks:
+      - backend
+    ports:
+      - "6379:6379"
+
+  #  events-service:
+  #    networks:
+  #      - backend
+  #    build:
+  #      context: ./events-service
+  #      dockerfile: Dockerfile
+  #    ports:
+  #      - "8080:8080"
+  #    depends_on:
+  #      - consul
+  #      - redis
+
   jaeger:
     image: jaegertracing/all-in-one:latest
     networks:
@@ -7,12 +33,14 @@ services:
     ports:
       - "16686:16686"
       - "14250"
+
   zipkin:
     image: openzipkin/zipkin-slim:latest
     networks:
       - otelcol
     ports:
       - "9412:9411"
+
   otel-collector:
     image: otel/opentelemetry-collector-contrib:0.74.0
     networks:
@@ -44,18 +72,22 @@ services:
     networks:
       - otelcol
     volumes:
-      - ./prometheus/prometheus-config.yaml:/etc/prometheus/prometheus-config.yaml
+      - ./otel/prometheus/prometheus-config.yaml:/etc/prometheus/prometheus-config.yaml
     ports:
       - "9090:9090"
+
   grafana:
     image: grafana/grafana:9.2.15
     networks:
       - otelcol
     volumes:
-      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
-      - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - ./otel/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./otel/grafana/provisioning/:/etc/grafana/provisioning/
     ports:
       - "3000:3000"
 
 networks:
   otelcol:
+    driver: bridge
+  backend:
+    driver: bridge

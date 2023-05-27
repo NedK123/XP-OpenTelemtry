@@ -22,9 +22,18 @@ public class LocalPricingService implements PricingService {
     }
 
     private BookingPrice generatePrice(Booking booking) throws FailedToPriceBookingException {
-        TicketPrice ticketPrice = storage.fetch(booking.getEventId(), booking.getAreaId());
+        TicketPrice ticketPrice = fetchTicketPrice(booking);
         double finalPrice = booking.getTicketsIds().stream().mapToDouble(s -> ticketPrice.getAmount()).reduce((left, right) -> left + right).orElseThrow(FailedToPriceBookingException::new);
         return BookingPrice.builder().amount(finalPrice).currency(ticketPrice.getCurrency()).build();
+    }
+
+    private TicketPrice fetchTicketPrice(Booking booking) throws FailedToPriceBookingException {
+        try {
+            return storage.fetch(booking.getEventId(), booking.getAreaId());
+        } catch (TicketPriceNotFoundException e) {
+            log.error("An error occured while fetching ticket prices for booking={}", booking, e);
+            throw new FailedToPriceBookingException();
+        }
     }
 
     private Booking fetchBooking(String bookingId) throws FailedToPriceBookingException {
