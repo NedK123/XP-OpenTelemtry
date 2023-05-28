@@ -61,6 +61,11 @@ services:
     ports:
       - "9412:9411"
 
+  loki:
+    image: grafana/loki
+    ports:
+      - "3100:3100"
+
   otel-collector:
     image: otel/opentelemetry-collector-contrib:0.74.0
     command: [ "--config=/etc/otel-collector-config.yaml" ]

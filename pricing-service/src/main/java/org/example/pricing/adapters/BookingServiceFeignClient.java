@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "booking-service", configuration = FeignTracingConfiguration.class)
 public interface BookingServiceFeignClient {
 
-    @GetMapping("{id}")
+    @GetMapping("booking/{id}")
     ResponseEntity<Booking> get(@PathVariable("id") String bookingId) throws BookingNotFoundException;
 
 }

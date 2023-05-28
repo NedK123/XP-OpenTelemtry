@@ -16,7 +16,9 @@ public class WebPaymentService implements PaymentService {
 
     @Override
     public void processPayment(TicketsBooking ticketsBooking) throws PaymentFailedException {
-        client.pay(PayApiRequest.builder().bookingId(ticketsBooking.getId()).build());
+        log.info("Calling payment service for booking={}", ticketsBooking);
+        PayApiRequest build = PayApiRequest.builder().bookingId(ticketsBooking.getId()).build();
+        client.pay(build);
     }
 
 }

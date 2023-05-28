@@ -29,8 +29,14 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${property("springDocVersion")}")
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-aop")
+    implementation("io.micrometer:micrometer-registry-prometheus")
     implementation("io.micrometer:micrometer-tracing-bridge-brave")
     implementation("io.zipkin.reporter2:zipkin-reporter-brave")
+//    implementation("com.github.loki4j:loki-logback-appender")
+    implementation("com.github.loki4j:loki-logback-appender:1.4.1")
+
+
     implementation("com.fasterxml.jackson.core:jackson-databind")
 
     compileOnly("org.projectlombok:lombok")
