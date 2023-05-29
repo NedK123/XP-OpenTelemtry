@@ -3,10 +3,12 @@ package com.example.booking.adapters.payment;
 import com.example.booking.core.TicketsBooking;
 import com.example.booking.core.payment.PaymentFailedException;
 import com.example.booking.core.payment.PaymentService;
+import io.micrometer.observation.annotation.Observed;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Observed
 @Service
 @AllArgsConstructor
 @Slf4j

@@ -31,13 +31,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("io.micrometer:micrometer-registry-prometheus")
-    implementation("io.micrometer:micrometer-tracing-bridge-brave")
+    implementation("io.micrometer:micrometer-tracing-bridge-otel")
     implementation("io.zipkin.reporter2:zipkin-reporter-brave")
-//    implementation("com.github.loki4j:loki-logback-appender")
-    implementation("com.github.loki4j:loki-logback-appender:1.4.1")
-
-
-    implementation("com.fasterxml.jackson.core:jackson-databind")
+    runtimeOnly("com.github.loki4j:loki-logback-appender:1.3.2")
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")

@@ -1,4 +1,4 @@
-package com.example.booking.config;
+package org.example.pricing.config;
 
 import io.micrometer.observation.Observation;
 import io.micrometer.observation.ObservationHandler;
