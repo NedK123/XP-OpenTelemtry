@@ -15,6 +15,10 @@ management:
     web:
       exposure:
         include: prometheus
+  # send traces to zipkin instance as well to view them not just in grafana
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans
 
 logging:
   pattern:

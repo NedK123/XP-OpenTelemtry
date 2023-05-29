@@ -34,6 +34,8 @@ dependencies {
     implementation("io.zipkin.reporter2:zipkin-reporter-brave")
     runtimeOnly("com.github.loki4j:loki-logback-appender:1.3.2")
 
+    implementation("io.github.openfeign:feign-micrometer:12.3")
+
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
