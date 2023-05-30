@@ -40,13 +40,14 @@ public class LocalPricingService implements PricingService {
         try {
             return storage.fetch(booking.getEventId(), booking.getAreaId());
         } catch (TicketPriceNotFoundException e) {
-            log.error("An error occured while fetching ticket prices for booking={}", booking, e);
+            log.error("An error occurred while fetching ticket prices for booking={}", booking, e);
             throw new FailedToPriceBookingException();
         }
     }
 
     private Booking fetchBooking(String bookingId) throws FailedToPriceBookingException {
         try {
+            log.info("Fetching booking with id={}", bookingId);
             return bookingService.fetch(bookingId);
         } catch (BookingNotFoundException e) {
             log.error("An error occurred while fetching booking with id={}", bookingId);

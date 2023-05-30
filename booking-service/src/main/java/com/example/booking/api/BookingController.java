@@ -22,7 +22,8 @@ public class BookingController implements BookingApi {
 
     @Override
     public ResponseEntity<TicketsBooking> get(String bookingId) throws BookingNotFoundException {
-        return null;
+        TicketsBooking booking = bookingService.get(bookingId);
+        return ResponseEntity.ok(booking);
     }
 
     private static URI bookingLocation(TicketsBooking booking) {

@@ -17,7 +17,9 @@ public class RedisEventTicketsPriceStorage implements EventTicketsPriceStorage {
 
     @Override
     public TicketPrice fetch(String eventId, String areaId) throws TicketPriceNotFoundException {
-        TicketPriceEntity entity = repo.findById(map(eventId, areaId)).orElseThrow(TicketPriceNotFoundException::new);
+        String id = map(eventId, areaId);
+        log.info("Fetching ticket price from storage with id={}", id);
+        TicketPriceEntity entity = repo.findById(id).orElseThrow(TicketPriceNotFoundException::new);
         return map(entity);
     }
 
@@ -35,7 +37,7 @@ public class RedisEventTicketsPriceStorage implements EventTicketsPriceStorage {
     }
 
     private String map(String eventId, String areaId) {
-        return String.format("%s-%s", eventId, areaId);
+        return String.format("%s@%s", eventId, areaId);
     }
 
 }
