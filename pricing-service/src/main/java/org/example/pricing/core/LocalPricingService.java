@@ -49,6 +49,7 @@ public class LocalPricingService implements PricingService {
         try {
             return bookingService.fetch(bookingId);
         } catch (BookingNotFoundException e) {
+            log.error("An error occurred while fetching booking with id={}", bookingId);
             throw new FailedToPriceBookingException();
         }
     }

@@ -19,8 +19,6 @@ services:
     depends_on:
       - consul
       - redis
-      - tempo
-      - loki
 
   booking-service:
     build:
@@ -31,8 +29,6 @@ services:
     depends_on:
       - consul
       - redis
-      - tempo
-      - loki
 
   payment-service:
     build:
@@ -43,8 +39,6 @@ services:
     depends_on:
       - consul
       - redis
-      - tempo
-      - loki
 
   pricing-service:
     build:
@@ -55,78 +49,11 @@ services:
     depends_on:
       - consul
       - redis
-      - tempo
-      - loki
-
-  tempo:
-    image: grafana/tempo
-    extra_hosts: [ 'host.docker.internal:host-gateway' ]
-    command: [ "-config.file=/etc/tempo.yaml" ]
-    volumes:
-      - ./otel/tempo/tempo-local.yaml:/etc/tempo.yaml:ro
-      - ./tempo-data:/tmp/tempo
-    ports:
-      - "14268"  # jaeger ingest
-      - "9411:9411" # zipkin
-
-  loki:
-    image: grafana/loki
-    extra_hosts: [ 'host.docker.internal:host-gateway' ]
-    command: [ "-config.file=/etc/loki/local-config.yaml" ]
-    ports:
-      - "3100:3100"                                   # loki needs to be exposed so it receives logs
-    environment:
-      - JAEGER_AGENT_HOST=tempo
-      - JAEGER_ENDPOINT=http://tempo:14268/api/traces # send traces to Tempo
-      - JAEGER_SAMPLER_TYPE=const
-      - JAEGER_SAMPLER_PARAM=1
 
   jaeger:
     image: jaegertracing/all-in-one:latest
     ports:
-      - "16686:16686"
-      - "14250"
-
-  zipkin:
-    image: openzipkin/zipkin-slim:latest
-    ports:
-      - "9412:9411"
-
-  otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.74.0
-    command: [ "--config=/etc/otel-collector-config.yaml" ]
-    volumes:
-      - ./otel/otel-collector-config.yaml:/etc/otel-collector-config.yaml
-    ports:
-      - "4317:4317"
-      - "55680:55680"
-      #        - "9411:9411"
-      - "9464:9464"
-      - "8888:8888"
-    depends_on:
-      - jaeger
-      - zipkin
-
-  prometheus:
-    image: prom/prometheus
-    extra_hosts: [ 'host.docker.internal:host-gateway' ]
-    command:
-      - --enable-feature=exemplar-storage
-      - --config.file=/etc/prometheus/prometheus.yml
-    volumes:
-      - ./otel/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-    ports:
-      - "9090:9090"
-
-  grafana:
-    image: grafana/grafana
-    extra_hosts: [ 'host.docker.internal:host-gateway' ]
-    volumes:
-      - ./otel/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
-      - ./otel/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - 4318:4318
+      - 16686:16686
     environment:
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-      - GF_AUTH_DISABLE_LOGIN_FORM=true
-    ports:
-      - "3000:3000"
+      - COLLECTOR_OTLP_ENABLED=true

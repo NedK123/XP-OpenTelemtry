@@ -1,6 +1,5 @@
 package org.example.payment.api;
 
-import io.micrometer.observation.annotation.Observed;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.payment.core.PayRequest;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
-@Observed
 @RestController
 @AllArgsConstructor
 @Slf4j

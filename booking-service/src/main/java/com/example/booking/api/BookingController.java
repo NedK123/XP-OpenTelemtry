@@ -1,7 +1,6 @@
 package com.example.booking.api;
 
 import com.example.booking.core.*;
-import io.micrometer.observation.annotation.Observed;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 
-@Observed
 @RestController
 @AllArgsConstructor
 public class BookingController implements BookingApi {

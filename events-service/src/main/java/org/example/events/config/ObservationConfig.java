@@ -1,11 +1,8 @@
 package org.example.events.config;
 
-import io.micrometer.observation.Observation;
-import io.micrometer.observation.ObservationHandler;
-import io.micrometer.observation.ObservationRegistry;
-import io.micrometer.observation.ObservationTextPublisher;
-import io.micrometer.observation.aop.ObservedAspect;
+import io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,13 +11,8 @@ import org.springframework.context.annotation.Configuration;
 public class ObservationConfig {
 
     @Bean
-    public ObservationHandler<Observation.Context> observationTextPublisher() {
-        return new ObservationTextPublisher(log::info);
-    }
-
-    @Bean
-    public ObservedAspect observedAspect(ObservationRegistry observationRegistry) {
-        return new ObservedAspect(observationRegistry);
+    public OtlpHttpSpanExporter otlpHttpSpanExporter(@Value("${tracing.url}") String url) {
+        return OtlpHttpSpanExporter.builder().setEndpoint(url).build();
     }
 
 }

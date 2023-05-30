@@ -2,7 +2,6 @@ package com.example.booking.core;
 
 import com.example.booking.core.events.IEventsService;
 import com.example.booking.core.payment.PaymentService;
-import io.micrometer.observation.annotation.Observed;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,9 +15,6 @@ public class TicketsBookingService implements BookingService {
     private IEventsService eventsService;
     private PaymentService paymentService;
 
-    @Observed(name = "user.name",
-            contextualName = "booking-tickets",
-            lowCardinalityKeyValues = {"userType", "userType2"})
     @Override
     public TicketsBooking book(BookTicketsRequest request) throws BookingFailedException {
         log.info("Processing booking request={}", request);

@@ -1,6 +1,5 @@
 package org.example.events.api;
 
-import io.micrometer.observation.annotation.Observed;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.events.core.Event;
@@ -16,7 +15,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Observed
 @RestController
 @AllArgsConstructor
 @Slf4j

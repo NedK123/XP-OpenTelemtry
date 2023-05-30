@@ -30,9 +30,10 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-aop")
-    implementation("io.micrometer:micrometer-registry-prometheus")
+
     implementation("io.micrometer:micrometer-tracing-bridge-otel")
-    implementation("io.zipkin.reporter2:zipkin-reporter-brave")
+    implementation("io.opentelemetry:opentelemetry-exporter-otlp")
+
     runtimeOnly("com.github.loki4j:loki-logback-appender:1.3.2")
 
     implementation("io.github.openfeign:feign-micrometer:12.3")
@@ -46,7 +47,7 @@ dependencies {
 dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-        mavenBom("io.opentelemetry:opentelemetry-bom:1.24.0")
+//        mavenBom("io.opentelemetry:opentelemetry-bom:1.24.0")
     }
 }
 
