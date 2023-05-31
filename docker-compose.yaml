@@ -57,3 +57,26 @@ services:
       - 16686:16686
     environment:
       - COLLECTOR_OTLP_ENABLED=true
+
+  loki:
+    image: grafana/loki
+    command: [ "-config.file=/etc/loki/local-config.yaml" ]
+    ports:
+      - "3100:3100"
+    environment:
+      - JAEGER_AGENT_HOST=jaeger
+      - JAEGER_ENDPOINT=http://jaeger:4318/v1/traces
+      - JAEGER_SAMPLER_TYPE=const
+      - JAEGER_SAMPLER_PARAM=1
+
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - ./otel/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./otel/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    ports:
+      - "3000:3000"

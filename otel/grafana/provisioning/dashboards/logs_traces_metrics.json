@@ -69,8 +69,8 @@
     },
     {
       "datasource": {
-        "type": "tempo",
-        "uid": "tempo"
+        "type": "jaeger",
+        "uid": "jaeger"
       },
       "description": "",
       "gridPos": {
@@ -83,8 +83,8 @@
       "targets": [
         {
           "datasource": {
-            "type": "tempo",
-            "uid": "tempo"
+            "type": "jaeger",
+            "uid": "jaeger"
           },
           "query": "$traceID",
           "queryType": "traceId",
